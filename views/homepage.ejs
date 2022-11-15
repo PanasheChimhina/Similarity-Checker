@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Plagiarism Checker</title>
+    <meta name="description" content="A web application that checks for similarity in documents">
+    <link id="favicon" rel="icon" href="https://i.postimg.cc/mDVrBpsR/logo.png" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" />
+    <link rel="stylesheet" href="../public/style.css">
+</head>
+
+<body onload="stopLoader()">
+
+    <header>
+        <div id="nav-div">
+            <nav id="navbar">
+                <div class="logo">
+                    <img id="header-img" src='https://i.postimg.cc/mDVrBpsR/logo.png' border='0' alt="" />
+                </div>
+                <ul>
+                    <li><a href="#standard-check">Standard check</a></li>
+                    <li><a href="#web-check">Web check</a></li>
+                    <li><a href="#FAQ">FAQ</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li>
+                        <!-- <span class="nav-icon" onclick="changeMode()"><i class="fas fa-duotone fa-sun"></i></span> -->
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Add loader animation -->
+    <div id="loader">
+        <div id="loaderCircle"></div>
+    </div>
+
+    <section id="standard-check">
+        <div id="hero">
+            <div id="container">
+                <div id="description-box">
+                    <h1 id="ccc">Check the similarity between two documents.</h1>
+                    <h3>Use <strong>Standard Check</strong> to ensure a piece of writing is unique!</h3>
+                    <h3>Enter text and get a similarity report.</h3>
+                    <div class="bounce">
+                        <a href="#web-check">
+                            <i class="fa fa-arrow-down hero-fa"> </i>
+                        </a>
+                    </div>
+                </div>
+                <div id="input-container">
+                    <form id="text_id" form method="post" action="/result" enctype="multipart/form-data">
+                        <div id="text-area-container">
+                            <textarea rows="20" cols="35" id="text-source" placeholder="Enter source!"
+                                name="source"></textarea>
+                            <textarea rows="20" cols="35" id="text-target" placeholder="Enter target!"
+                                name="target"></textarea>
+                        </div>
+                        <p id="input-text"> or import files <i class="fa fa-laptop" aria-hidden="true"></i></p>
+                        <div id="input-file-container">
+                            <input type="file" id="myfile" class="custom-file-input" name="firstFile"
+                                onchange="checkData()">
+                            <input onchange="checkData()" type="file" id="myOtherfile" class="custom-file-input"
+                                name="secondFile">
+                        </div>
+                        <button type="submit" id="check-btn" disabled><span onclick="checkTextAreaData()">Check
+                                Similarity</span></button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="web-check">
+
+        <div id="web-title">
+            <h1>Web-based plagiarism Check.</h1>
+        </div>
+
+        <div id="web-textarea-div">
+            <form id="text" form method="post" action="/webResult">
+                <h3>Check for plagiarism against numerous doucuments across the web.</h3>
+                <textarea name="text" rows="15" cols="130" id="web-text" placeholder="Enter Text!"></textarea>
+                <button type="submit" onclick="startLoader()" id="check-btn">Check Similarity</button>
+            </form>
+        </div>
+
+    </section>
+
+    <section id="FAQ">
+        <div id="faq-containter">
+            <h1 style="text-align: center;">Frequently Asked Questions</h1>
+            <div id="faq-div">
+            </div>
+            <div id="questions">
+
+                <details>
+                    <summary>
+                        What does the standard check really do?
+                        <span class="icon"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <p>
+                        The standard-check feature enables you to check if your documents are unique. You can enter two
+                        pieces of text or import two documents from your device and click the check similarity button to
+                        view a similarity report.
+                    </p>
+                </details>
+                <details>
+                    <summary>
+                        What does the web-check really do?
+                        <span class="icon"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <p>
+                        The web-check makes a google based search using every sentence in the text you have entered in
+                        the text area. Upon clicking the check similarity button, you will receive a similarity report
+                        listing all the plagiarised(in red) and unique sentences in the text provided. Clicking on each
+                        plagiarised sentence will redirect you to the link where similar text was found.
+                    </p>
+                </details>
+                <details>
+                    <summary>
+                        What's the difference between the standard check and the web check?
+                        <span class="icon"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <p>
+                        The standard-check carries a though plagiarism check between two pieces of text provided whereas
+                        the web-check makes a google based plagiarism check for one piece of text.
+                    </p>
+                </details>
+                <details>
+                    <summary>
+                        How does the standard check work?
+                        <span class="icon"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <p>
+                        This feature makes use of the Levenshtein Algorithm which calculates the Levenshtein Distance
+                        between two text entries. The Levenshtein Distance is the minimum number of
+                        single-character/string
+                        edits required to change one word/document into the other. The Percentage similarity is thereby
+                        derived from the result.
+                    </p>
+                </details>
+                <details>
+                    <summary>
+                        How does the web check work?
+                        <span class="icon"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <p>
+                        The web-check makes use of an npm library called serp which enables it to make a google based
+                        search based on keywords which in this case will be the sentences entered in the text area.
+                    </p>
+                </details>
+            </div>
+
+        </div>
+    </section>
+    <section id="contact">
+        <div id="section-div">
+            <h1 id="contact-title">Get in touch</h1>
+            <h3>Let's work together...</h3>
+            <div class="icons">
+                <a href="#contact">
+                    <ion-icon name="logo-linkedin" style="color: #0072b1;"></ion-icon>
+                </a>
+                <a href="https://github.com/PanasheChimhina">
+                    <ion-icon name="logo-github"></ion-icon>
+                </a>
+                <a href=“tel:+447488320147”>
+                    <ion-icon name="call" style="color: #0F9D58;"></ion-icon>
+                </a>
+                <a href="mailto: panashechimhina@gmail.com">
+                    <ion-icon name="mail" style="color: #DB4437;"></ion-icon>
+                </a>
+                <a href="#contact">
+                    <ion-icon name="logo-facebook" style="color: #3b5998;"></ion-icon>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <a>Designed & Coded by Panashe</a>
+
+    </footer>
+    </section>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+
+    <script type="text/javascript">
+
+        // function changeMode() {
+        //     document.getElementById('input-container').style.background = document.getElementById('input-container').style.background == 'black' ? 'white' : 'black';
+        //     document.getElementById('web-check').style.background = document.getElementById('web-check').style.background == 'black' ? 'white' : 'black';
+        //     document.getElementById('FAQ').style.background = document.getElementById('FAQ').style.background == 'black' ? 'white' : 'black';
+        //     document.getElementById('contact').style.background = document.getElementById('contact').style.background == 'black' ? 'white' : 'black';
+        //     document.getElementById('text-source').style.background = document.getElementById('text-source').style.background == 'black' ? 'white' : 'black';
+        //     document.getElementById('text-target').style.background = document.getElementById('text-target').style.background == 'black' ? 'white' : 'black';
+        //     document.getElementById('text').style.background = document.getElementById('text').style.background == 'black' ? 'white' : 'black';
+        //     document.getElementById('myfile').style.background = document.getElementById('myfile').style.background == 'black' ? 'white' : 'black';
+        //     document.getElementById('myOtherfile').style.background = document.getElementById('myOtherfile').style.background == 'black' ? 'white' : 'black';
+        //     document.body.style.color = document.body.style.color == 'white' ? 'black' : 'white';
+        // }
+
+        //disable submit if both at least one text area is empty.
+        function checkTextAreaData() {
+            const areaOne = document.getElementById('text-source')
+            const areaTwo = document.getElementById('text-target')
+
+            if (areaOne.value && areaTwo.value) {
+                //startLoader();
+                document.getElementById('text_id').submit()
+            }
+        }
+        //Submit the form once both input type of file have file inputs
+        function checkData() {
+            const firstFile = document.getElementById('myfile')
+            const secondFile = document.getElementById('myOtherfile')
+
+            if (firstFile.value && secondFile.value) {
+                document.getElementById('text_id').submit();
+            }
+        }
+
+        function startLoader() {
+            document.getElementById("loader").style.display = "flex";
+            document.getElementById("nav-div").style.display = "none";
+            document.getElementById("standard-check").style.display = "none";
+            document.getElementById("web-check").style.display = "none";
+            document.getElementById("traslator").style.display = "none";
+            document.getElementById("contact").style.display = "none";
+        }
+
+        function stopLoader() {
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("nav-div").style.display = "block";
+            document.getElementById("standard-check").style.display = "block";
+            document.getElementById("web-check").style.display = "block";
+            document.getElementById("traslator").style.display = "block";
+            document.getElementById("contact").style.display = "block";
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+function convertToRoman(num) {
+  const romanNumList = {
+     1000 : 'M',
+     900: 'CM',
+     500: 'D',
+     400: 'CD',
+     100: 'C',
+     90: 'XC',
+     50: 'L',
+     40: 'XL',
+     10: 'X',
+     9: 'IX',
+     5: 'V',
+     4: 'IV',
+     1:'I'
+  }
+  let romanNumeral= "";
+  let decimals = Object.keys(romanNumList).reverse();
+ 
+ if (num > 3999 || num < 0) {
+   return 'enter a number between 1 and 3999';
+ }
+ else {
+   decimals.forEach(el => {
+     while (el <= num){
+       romanNumeral += romanNumList[el];
+       num-= el;
+     }
+   });
+ }
+ return romanNumeral;
+}
+
+console.log(convertToRoman(36));
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+function checkCashRegister(price, cash, cid) {
+  let currency = [["PENNY", 0.01], ["NICKEL", 0.05], ["DIME",  0.1], ["QUARTER", 0.25], ["ONE", 1], ["FIVE", 5], ["TEN", 10], ["TWENTY", 20], ["ONE HUNDRED", 100]];
+  
+  let obj ={status: '', change: []}
+  let keys = [];
+  let change = cash - price;
+  let total = 0;
+  cid.forEach(el => total+=el[1]);
+  currency.forEach(el => {keys.unshift(el[1])});
+  let statusObject = {status: '', change : []};
+
+  if(total < change){
+    obj.status = "INSUFFICIENT_FUNDS"
+  }
+  else if(total === change){
+    obj.status = "CLOSED";
+    obj.change.push(total);
+  }
+  else {
+    obj.status = 'OPEN';
+    keys.forEach(el => {
+      while(el <= change && cid[cid.length-keys.indexOf(el)-1][1] !== 0) {
+        
+        if (obj.change.length !== 0 && obj.change[obj.change.length-1][0] === currency[currency.length-keys.indexOf(el)-1][0]){
+            obj.change[obj.change.length-1][1] += el;
+          
+        }
+        else {
+          obj.change.push(currency[currency.length-keys.indexOf(el)-1]);
+        }
+        cid[currency.length-keys.indexOf(el)-1][1] -= currency[currency.length-keys.indexOf(el)-1][1];
+        change -= el;
+      }
+    });
+  }
+  let arr = [...obj.change];
+  
+  return obj;
+}
+
+console.log(checkCashRegister(3.26, 100, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]));
+
+// && el <= cid[cid.length-cid.indexOf(el)-1][1]
+
+--------------------------------------------------------------------------------------------
+function checkCashRegister(price, cash, cid) {
+  let currency = [["PENNY", 0.01], ["NICKEL", 0.05], ["DIME",  0.1], ["QUARTER", 0.25], ["ONE", 1], ["FIVE", 5], ["TEN", 10], ["TWENTY", 20], ["ONE HUNDRED", 100]];
+  
+  let arr = []
+  let obj ={status: '', change: []}
+  let keys = [];
+  let change = cash - price;
+  let total = 0;
+  cid.forEach(el => total+=el[1]);
+  currency.forEach(el => {keys.unshift(el[1])});
+  currency.forEach(el => {arr.unshift([el[0],0])})
+  let statusObject = {status: '', change : []};
+  
+  if(total < change){
+    obj.status = "INSUFFICIENT_FUNDS"
+  }
+  else if(total === change){
+    obj.status = "CLOSED";
+    obj.change.push(total);
+  }
+  else {
+    obj.status = 'OPEN';
+    keys.forEach(el => {
+      while(el <= change && cid[cid.length-keys.indexOf(el)-1][1] !== 0) {
+  
+          arr[keys.indexOf(el)][1] += el;
+          
+        cid[currency.length-keys.indexOf(el)-1][1] -= currency[currency.length-keys.indexOf(el)-1][1];
+        change -= el;
+      }
+    //   if (change > 0) {
+    //     return {status: "INSUFFICIENT_FUNDS", change: []}
+    //   }
+    });
+  }
+  arr.forEach(el => {
+    if (el[1] > 0){
+      obj.change.push(el);
+    }
+  })
+  
+  
+  return obj;
+}
+
+console.log(checkCashRegister(3.26, 100, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]));
+
+// && el <= cid[cid.length-cid.indexOf(el)-1][1]

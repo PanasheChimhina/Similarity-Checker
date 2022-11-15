@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Plagiarism Checker</title>
+    <meta name="description" content="A web application that checks for similarity in documents">
+    <link id="favicon" rel="icon" href="https://i.postimg.cc/mDVrBpsR/logo.png" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" />
+    <link rel="stylesheet" href="../public/style.css">
+</head>
+
+<body onload="stopLoader()">
+
+    <!-- Add loader animation -->
+    <div id="loader">
+        <div id="loaderCircle"></div>
+    </div>
+    <% if (report) { %>
+        <div id="report-container">
+            <div id="report-title">
+
+                <h1>Similarity Report</h1>
+            </div>
+
+            <div id="results-ul-container">
+
+
+                <h3 id="result" style="text-align: center;">Percentage similarity: <%- report %>
+                </h3>
+
+                <div class="progess-div">
+                    <% for(var i=0; i < parseFloat(report) ; i++) { %>
+                        <% let val=parseFloat(report) %>
+                            <% if (val < 25) { %>
+                                <div id="progress-inner-div" style="background-color: rgb(14, 211, 14);"></div>
+                                <% } %>
+
+                                    <% if (val> 25 && val< 49) { %>
+                                            <div id="progress-inner-div" style="background-color:rgb(168, 190, 0);">
+                                            </div>
+                                            <% } %>
+
+                                                <% if (val> 49 && val< 75) { %>
+                                                        <div id="progress-inner-div"
+                                                            style="background-color:rgb(255, 102, 0);"></div>
+                                                        <% } %>
+
+                                                            <% if (val> 74 && val<= 100 ) { %>
+                                                                    <div id="progress-inner-div"
+                                                                        style="background-color:red;"></div>
+                                                                    <% } %>
+
+
+                                                                        <% } %>
+                </div>
+
+            </div>
+
+            <div id="report-description">
+                <h2>Intepreting the similarity report</h2>
+                <ul id="result-ul">
+                    <li id="results-li"><span style="color: rgb(0, 0, 0) ;">Black:</span> No similarity. Both documents
+                        are
+                        truly unique</li>
+                    <li id="results-li"><span style="color: rgb(14, 211, 14);">Green:</span> One word to 24% matching
+                        text.
+                    </li>
+                    <li id="results-li"><span style="color: rgb(225, 255, 0);">Yellow:</span> 25 - 49% matching text.
+                    </li>
+                    <li id="results-li"><span style="color: rgb(203, 98, 19);">Orange:</span> 50 - 74% matching text.
+                    </li>
+                    <li id="results-li"><span style="color: Red;">Red:</span> 75 - 100% matching text.</li>
+                </ul>
+            </div>
+            <a href="/"><button class="btn " onclick="startLoader()"
+                    style="background-color: #001e38;padding: 10px;border: none;border-radius: 5px;">Go
+                    to home</button></a>
+            <div>
+
+            </div>
+        </div>
+        <% } %>
+            <% if (result && count) { %>
+                <section id="pageContent">
+                    <div class="container">
+                        <h1 class="text-center mb-3">Plagiarism Report</h1>
+                        <hr style="width: 65%;background-color: green;">
+                        <h3 class="text-center">Intepreting Report: Sentences in red are plagiarised. Click on them
+                            to view source.</h3>
+
+                        <!-- loop over all cases and render them -->
+
+
+                        <div class="card text-center mb-4">
+                            <div class="card-body">
+                                <b> Found <%= count.plagiarised %> out of <%= count.total %> sentences plagiarised!
+                                </b>
+                            </div>
+                        </div>
+
+                        <% result.forEach((r, i)=> { %>
+
+                            <% if (r.url) { %>
+                                <a href="<%= r.url %>" target="_blank" data-toggle="tooltip" data-placement="top"
+                                    title="Click to visit the source">
+                                    <div class="alert" style="height: 40px;border: 1px red;width: 60%;"><b>
+                                            <%= i+1 %>.
+                                        </b>
+                                        <%= r.text %>
+                                    </div>
+                                </a>
+                                <%} else { %>
+                                    <div class="alert" style="min-height: 40px;width: 60%;" data-toggle="tooltip"
+                                        data-placement="top" title="Unique">
+                                        <b>
+                                            <%= i+1 %>. <%= r.text %>
+                                        </b>
+
+                                    </div>
+                                    <% } %>
+
+                                        <% }) %>
+
+                                            <a href="/"><button class="btn"
+                                                    style="background-color: #001e38;border-radius: 5px; border: none; padding: 10px;"
+                                                    onclick="startLoader()">Go to
+                                                    home</button></a>
+
+
+
+                    </div>
+                </section>
+                <% }%>
+                    <script>
+
+                        function startLoader() {
+                            document.getElementById("loader").style.display = "flex";
+                            document.getElementById("nav-div").style.display = "none";
+                            document.getElementById("standard-check").style.display = "none";
+                            document.getElementById("cweb-check").style.display = "none";
+                            document.getElementById("traslator").style.display = "none";
+                            document.getElementById("contact").style.display = "none";
+                        }
+
+                        function stopLoader() {
+                            document.getElementById("loader").style.display = "none";
+                            document.getElementById("nav-div").style.display = "block";
+                            document.getElementById("standard-check").style.display = "block";
+                            document.getElementById("cweb-check").style.display = "block";
+                            document.getElementById("traslator").style.display = "block";
+                            document.getElementById("contact").style.display = "block";
+                        }
+                    </script>
+
+</body>
+
+</html>
